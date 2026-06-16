@@ -1,13 +1,11 @@
 from django.http import HttpResponse
 from .models import Question
+from django.shortcuts import render
 
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    question_text =[]
-    for q in latest_question_list:
-        question_text.append(q.question_text)
-    output = ",".join(question_text)
-    return HttpResponse(output)
+    context = {"latest_question_list": latest_question_list}
+    return render(request, "polls/index.html", context)
 
 def detail(request, question_id):
     return HttpResponse(f"You're looking at question {question_id}.")
